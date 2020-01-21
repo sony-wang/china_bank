@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <!-- <link rel="stylesheet" href="../assets/css/backend.min.css"> -->
+    <link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.6/css/bootstrap.min.css'/>
+    <title>查询银行网址</title>
+</head>
+<body>
+    <div class="container">
+        
+        <div class="wrapper">
+            <div class="input-group">
+                <h1>查询银行网站</h1>
+                <input type="text" name="bank_name" list="bank_name" value="" class="form-control" placeholder="请选择 / 输入银行名称">
+                <input type="hidden" name="bank_link" value="">
+                <datalist id="bank_name"></datalist>
+                <button onclick="searchlink()" class="btn btn-primary">前往</button>
+                <button onclick="clear_inp()" class="btn btn-default">清除</button>
+                <div id="shortcut">
+                    <div class="bank_shortcut_list">
+                    
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
+<!-- <script src="../assets/libs/jquery/dist/jquery.min.js"></script>
+<script src="../assets/libs/bootstrap/dist/js/bootstrap.min.js"></script> -->
+<script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js'></script>
+<script src='https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.6/js/bootstrap.min.js'></script>
+<script src="./banks.js"></script>
+<script>
+    /* let bankArr = [
+        {name:"中国农业银行",link:"http://www.abchina.com"},
+        {name:"中国建设银行",link:"http://www.ccb.com"},
+    ] */
+    let bankArr = banks;
+    let bank_name_inp = document.getElementsByName('bank_name')[0];
+    let bank_link_inp = document.getElementsByName('bank_link')[0];
+    let bank_name = document.getElementById('bank_name');
+    let bank_shortcut_list = document.getElementsByClassName('bank_shortcut_list')[0];
+    for(let i=0;i<bankArr.length; i++){
+        let bank_list = bankArr[i]
+        let op = document.createElement("option");
+        op.setAttribute('value',bank_list.name);
+        // op.setAttribute('label',bank_list.link);
+        bank_name.appendChild(op);
+        /* let bank_list = `<option value="${bankArr[i].name}"></option>`;
+            bank_name.innerHTML += bank_list; */
+    }
+    function searchlink(){
+        /* let pos = bankArr.map(function(e){
+            return e.name;
+        }).indexOf('中国建设银行'); */
+
+        let isName = bankArr.map(function(e){
+            return e.name;
+        }).indexOf(bank_name_inp.value);
+
+        let isLink = bankArr.map(function(e){
+            return e.link;
+        });
+        console.log(isName);
+        console.log(isLink[isName]);
+        if(bank_name_inp.value !=''){
+            window.open(isLink[isName], '_blank');
+        }
+    }
+    function clear_inp(){
+        console.log(bank_name_inp);
+        bank_name_inp.value = '';
+        bank_link_inp.value = '';
+    }
+    //常用银行
+    let shortcut = ["中国农业银行","建设银行"];
+        let isName = bankArr.map(function(e){
+            return e.name;
+        })
+        let isLink = bankArr.map(function(e){
+            return e.link;
+        })
+        for(let s=0; s<shortcut.length;s++){
+            console.log(shortcut[s]);
+            console.log(isLink[isName.indexOf(shortcut[s])])
+            let shortcut_link = isLink[isName.indexOf(shortcut[s])];
+            bank_shortcut_list.innerHTML+=`<a href="${shortcut_link}" target="_blank">${shortcut[s]}</a>`
+        }
+</script>
+
+<style>
+    h1{
+        text-align: center;
+        font-family: Microsoft JhengHei;
+    }
+    .wrapper{
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        height: 100vh;
+    }
+    button{
+        width: 50%;
+    }
+    #shortcut{
+        margin-top: 2rem;
+    }
+    #shortcut .bank_shortcut_list{
+        display: flex;
+        flex-wrap: wrap;
+        max-width: 250px;
+    }
+    #shortcut a{
+        margin: 5px;
+        color: #fff;
+        background: #2c3e50;
+        padding: 2px 5px;
+        border-radius: 3px;
+    }
+</style>
